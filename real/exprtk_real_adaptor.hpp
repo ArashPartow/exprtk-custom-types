@@ -28,7 +28,13 @@ namespace exprtk
 {
    namespace details
    {
-      namespace numeric { namespace details { struct my_real_type_tag; } }
+      namespace numeric { namespace details
+      {
+         struct my_real_type_tag;
+
+         template <typename T> inline T const_pi_impl(my_real_type_tag);
+         template <typename T> inline T const_e_impl (my_real_type_tag);
+      }}
 
       inline bool is_true (const real::type v);
       inline bool is_false(const real::type v);
@@ -109,6 +115,9 @@ namespace exprtk
             template <typename T> inline T  notl_impl(const T v, my_real_type_tag) { return (v != real::type(0) ? real::type(0) : real::type(1)); }
             template <typename T> inline T  frac_impl(const T v, my_real_type_tag) { return (v - static_cast<long long>(v)); }
             template <typename T> inline T trunc_impl(const T v, my_real_type_tag) { return real::type(static_cast<long long>(v));    }
+
+            template <typename T> inline T const_pi_impl(my_real_type_tag) { return real::details::constant::pi; }
+            template <typename T> inline T const_e_impl (my_real_type_tag) { return real::details::constant::e;  }
 
             template <typename T>
             inline int to_int32_impl(const T v, my_real_type_tag)
