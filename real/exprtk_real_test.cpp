@@ -1305,13 +1305,13 @@ inline bool run_test01()
                                 test_xy<T>(" ((2) y) == (2*y)" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>(" (2 (y)) == (2*y)" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; (a)(3) == 6" ,T(2.0),T(3.0),T(1.0)),
-                                test_xy<T>("var a := 2; (a){3} == 6" ,T(2.0),T(3.0),T(1.0)),
+                                test_xy<T>("var a := 2; (A){3} == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; (a)[3] == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; {a}(3) == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; {a}{3} == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; {a}[3] == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; var b := 3; (a)(b) == 6" ,T(2.0),T(3.0),T(1.0)),
-                                test_xy<T>("var a := 2; var b := 3; (a){b} == 6" ,T(2.0),T(3.0),T(1.0)),
+                                test_xy<T>("var a := 2; var b := 3; (a){B} == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; var b := 3; (a)[b] == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; var b := 3; {a}(b) == 6" ,T(2.0),T(3.0),T(1.0)),
                                 test_xy<T>("var a := 2; var b := 3; {a}{b} == 6" ,T(2.0),T(3.0),T(1.0)),
@@ -1601,7 +1601,7 @@ inline bool run_test01()
                                 test_xy<T>("var a := 2; (1 * a) == a",T(0),T(0),T(1)),
                                 test_xy<T>("var a.b     := 3; (2 * a.b    ) == 6",T(0),T(0),T(1)),
                                 test_xy<T>("var aa.bb   := 3; (2 * aa.bb  ) == 6",T(0),T(0),T(1)),
-                                test_xy<T>("var aaa.bbb := 3; (2 * aaa.bbb) == 6",T(0),T(0),T(1)),
+                                test_xy<T>("var aaa.bbb := 3; (2 * aAa.BbB) == 6",T(0),T(0),T(1)),
                                 test_xy<T>("var a1.b2   := 3; (2 * a1.b2  ) == 6",T(0),T(0),T(1))
                               };
 
@@ -2447,7 +2447,92 @@ inline bool run_test02()
                              test_ab<T>("var x := 'XXXXX'; var y := '01234567890'; var i := 0; x[0:i+1] <=> y[:]; (x == '01XXX') and (y == 'XX234567890')", "","",T(1.0)),
                              test_ab<T>("var x := 'XXXXX'; var y := '01234567890'; var i := 0; x[0:i+2] <=> y[:]; (x == '012XX') and (y == 'XXX34567890')", "","",T(1.0)),
                              test_ab<T>("var x := 'XXXXX'; var y := '01234567890'; var i := 0; x[0:i+3] <=> y[:]; (x == '0123X') and (y == 'XXXX4567890')", "","",T(1.0)),
-                             test_ab<T>("var x := 'XXXXX'; var y := '01234567890'; var i := 0; x[0:i+4] <=> y[:]; (x == '01234') and (y == 'XXXXX567890')", "","",T(1.0))
+                             test_ab<T>("var x := 'XXXXX'; var y := '01234567890'; var i := 0; x[0:i+4] <=> y[:]; (x == '01234') and (y == 'XXXXX567890')", "","",T(1.0)),
+
+                             test_ab<T>("var v[4] := {1,2,3,4}; for (var i := 0; i < v[]; i += 1) { v[i] += 10; v[i] == 0 }; sum(v) == (1 + 2 + 3 + 4) + (v[] * 10)", "","",T(1.0)),
+                             test_ab<T>("var v[4] := {1,2,3,4}; for (var i := 0; i < v[]; i += 1) { v[i] -= 10; v[i] == 0 }; sum(v) == (1 + 2 + 3 + 4) - (v[] * 10)", "","",T(1.0)),
+                             test_ab<T>("var v[4] := {1,2,3,4}; for (var i := 0; i < v[]; i += 1) { v[i] *= 10; v[i] == 0 }; sum(v) == (1 + 2 + 3 + 4) * 10", "","",T(1.0)),
+                             test_ab<T>("var v[4] := {1,2,3,4}; for (var i := 0; i < v[]; i += 1) { v[i] /= 10; v[i] == 0 }; sum(v) == (1 + 2 + 3 + 4) / 10", "","",T(1.0)),
+
+                             test_ab<T>("a like b", "abcd", "abcd*", T(1.0)),
+                             test_ab<T>("a like b", "abcd", "abcd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "abc*" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*bcd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "abc?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "?bcd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "ab?d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "ab*d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a?cd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a*cd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a??d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a*?d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*bc*" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "?bc?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "????" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a???" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "ab??" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "abc?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "???d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "??cd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "?bcd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "?b?d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a?c?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a??d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "?bc?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "ab**" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "ab*?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "a***" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "**cd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*?cd" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "***d" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*bc*" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*bc?" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*b??" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "?bc*" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "??c*" , T(1.0)),
+                             test_ab<T>("a like b", "abcd", "*b?*" , T(1.0)),
+                             test_ab<T>("a like b", "ab"  , "a*"   , T(1.0)),
+                             test_ab<T>("a like b", "ab"  , "a?"   , T(1.0)),
+
+                             test_ab<T>("a ilike b", "aBcD", "abcd*", T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "abcd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "abc*" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*bcd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "abc?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "?bcd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "ab?d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "ab*d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a?cd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a*cd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a??d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a*?d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*bc*" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "?bc?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "????" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a???" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "ab??" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "abc?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "???d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "??cd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "?bcd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "?b?d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a?c?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a??d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "?bc?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "ab**" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "ab*?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "a***" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "**cd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*?cd" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "***d" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*bc*" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*bc?" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*b??" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "?bc*" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "??c*" , T(1.0)),
+                             test_ab<T>("a ilike b", "aBcD", "*b?*" , T(1.0)),
+                             test_ab<T>("a ilike b", "aB"  , "a*"   , T(1.0)),
+                             test_ab<T>("a ilike b", "aB"  , "a?"   , T(1.0))
                            };
 
    static const std::size_t test_list_size = sizeof(test_list) / sizeof(test_ab<T>);
@@ -4266,10 +4351,10 @@ inline bool run_test10()
         "var x[3] := [8]; var y[3] := {1,2,3};   (x += 1) <=> (y += 1); (x[0] == 2) and (x[1] == 3) and (x[2] == 4)",
         "var x[3] := [8]; var y[2] := {1,2};     (x += 1) <=> (y += 1); (x[0] == 2) and (x[1] == 3) and (x[2] == 9)",
         "var x[3] := [8]; var y[1] := {1};       (x += 1) <=> (y += 1); (x[0] == 2) and (x[1] == 9) and (x[2] == 9)",
-        "var x[3] := [0]; var y[4] := {1,2,3,4}; x <  y",
-        "var x[3] := [0]; var y[3] := {1,2,3};   x <  y",
-        "var x[3] := [0]; var y[2] := {1,2};     x <  y",
-        "var x[3] := [0]; var y[1] := {1};       x <  y",
+        "var x[3] := [0]; var y[4] := {1,2,3,4}; X <  y",
+        "var x[3] := [0]; var y[3] := {1,2,3};   x <  Y",
+        "var x[3] := [0]; var y[2] := {1,2};     X <  y",
+        "var x[3] := [0]; var y[1] := {1};       x <  Y",
         "var x[3] := [0]; var y[4] := {1,2,3,4}; x <= y",
         "var x[3] := [0]; var y[3] := {1,2,3};   x <= y",
         "var x[3] := [0]; var y[2] := {1,2};     x <= y",
@@ -4845,7 +4930,7 @@ inline std::size_t load_expressions(const std::string& file_name,
 
    std::size_t line_count = 0;
 
-   while (std::getline(stream,buffer))
+   while (std::getline(stream,(buffer)))
    {
       if (buffer.empty())
          continue;
@@ -7820,6 +7905,126 @@ inline bool run_test20()
             return false;
          }
       }
+   }
+
+   {
+      T              var;
+      std::string    str;
+      std::vector<T> vec(10,0.0);
+
+      typedef exprtk::symbol_table<T> symbol_table_t;
+
+      bool result = true;
+
+      {
+         symbol_table_t symbol_table;
+
+         symbol_table.add_variable ("val",var);
+         symbol_table.add_stringvar("str",str);
+         symbol_table.add_vector   ("vec",vec);
+
+         if (symbol_table.get_variable("val") == 0 || !symbol_table.symbol_exists("val"))
+         {
+            printf("run_test20() - [3] Failed to get 'val' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_stringvar("str") == 0 || !symbol_table.symbol_exists("str"))
+         {
+            printf("run_test20() - [3] Failed to get 'str' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_vector("vec") == 0 || !symbol_table.symbol_exists("vec"))
+         {
+            printf("run_test20() - [3] Failed to get 'vec' from symbol_table\n");
+            result = false;
+         }
+      }
+
+      if (!result)
+         return result;
+
+      {
+         symbol_table_t symbol_table;
+
+         symbol_table.add_variable("val",var);
+
+         if (symbol_table.get_variable("val") == 0 || !symbol_table.symbol_exists("val"))
+         {
+            printf("run_test20() - [4] Failed to get 'val' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_stringvar("str") != 0 || symbol_table.symbol_exists("str"))
+         {
+            printf("run_test20() - [4] Failed to get 'str' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_vector("vec") != 0 || symbol_table.symbol_exists("vec"))
+         {
+            printf("run_test20() - [4] Failed to get 'vec' from symbol_table\n");
+            result = false;
+         }
+      }
+
+      if (!result)
+         return result;
+
+      {
+         symbol_table_t symbol_table;
+
+         symbol_table.add_stringvar("str",str);
+
+         if (symbol_table.get_stringvar("str") == 0 || !symbol_table.symbol_exists("str"))
+         {
+            printf("run_test20() - [5] Failed to get 'str' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_variable("val") != 0 || symbol_table.symbol_exists("val"))
+         {
+            printf("run_test20() - [5] Failed to get 'val' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_vector("vec") != 0 || symbol_table.symbol_exists("vec"))
+         {
+            printf("run_test20() - [5] Failed to get 'vec' from symbol_table\n");
+            result = false;
+         }
+      }
+
+      if (!result)
+         return result;
+
+      {
+         symbol_table_t symbol_table;
+
+         symbol_table.add_vector("vec",vec);
+
+         if (symbol_table.get_vector("vec") == 0 || !symbol_table.symbol_exists("vec"))
+         {
+            printf("run_test20() - [6] Failed to get 'vec' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_variable("val") != 0 || symbol_table.symbol_exists("val"))
+         {
+            printf("run_test20() - [6] Failed to get 'val' from symbol_table\n");
+            result = false;
+         }
+
+         if (symbol_table.get_stringvar("str") != 0 || symbol_table.symbol_exists("str"))
+         {
+            printf("run_test20() - [6] Failed to get 'str' from symbol_table\n");
+            result = false;
+         }
+      }
+
+      if (!result)
+         return result;
    }
 
    return true;
