@@ -4,13 +4,13 @@
  *                                                            *
  * Custom Real type Adaptor                                   *
  * Authors: Arash Partow                                      *
- * URL: http://www.partow.net/programming/exprtk/index.html   *
+ * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
  * Free use of the Mathematical Expression Toolkit Library is *
  * permitted under the guidelines and in accordance with the  *
  * most current version of the MIT License.                   *
- * http://www.opensource.org/licenses/MIT                     *
+ * https://www.opensource.org/licenses/MIT                    *
  *                                                            *
  **************************************************************
 */
@@ -69,7 +69,7 @@ namespace exprtk
             template<> struct number_type<real::type> { typedef my_real_type_tag type; };
 
             template <>
-            struct epsilon_type<my_real_type_tag>
+            struct epsilon_type<real::type>
             {
                static inline real::type value()
                {
