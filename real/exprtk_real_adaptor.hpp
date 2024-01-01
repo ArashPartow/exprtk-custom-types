@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Custom Real type Adaptor                                   *
- * Authors: Arash Partow                                      *
+ * Authors: Arash Partow (1999-2024)                          *
  * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
@@ -11,6 +11,7 @@
  * permitted under the guidelines and in accordance with the  *
  * most current version of the MIT License.                   *
  * https://www.opensource.org/licenses/MIT                    *
+ * SPDX-License-Identifier: MIT                               *
  *                                                            *
  **************************************************************
 */
@@ -47,7 +48,7 @@ namespace exprtk
    {
       namespace details
       {
-         inline void print_type(const std::string& fmt, const real::type& v, exprtk::details::numeric::details::my_real_type_tag);
+         void print_type(const std::string& fmt, const real::type& v, exprtk::details::numeric::details::my_real_type_tag);
       }
    }}
 
@@ -73,7 +74,8 @@ namespace exprtk
             {
                static inline real::type value()
                {
-                  const real::type epsilon = real::type(0.000000000001);
+                  const real::type epsilon = real::type(0.000000000100);
+
                   return epsilon;
                }
             };
@@ -85,11 +87,11 @@ namespace exprtk
 
             template <typename T> inline T   abs_impl(const T v, my_real_type_tag) { return real::abs  (v); }
             template <typename T> inline T  acos_impl(const T v, my_real_type_tag) { return real::acos (v); }
-            template <typename T> inline T acosh_impl(const T v, my_real_type_tag) { return real::log(v + real::sqrt((v * v) - real::type(1))); }
+            template <typename T> inline T acosh_impl(const T v, my_real_type_tag) { return real::acosh(v); }
             template <typename T> inline T  asin_impl(const T v, my_real_type_tag) { return real::asin (v); }
-            template <typename T> inline T asinh_impl(const T v, my_real_type_tag) { return real::log(v + real::sqrt((v * v) + real::type(1))); }
+            template <typename T> inline T asinh_impl(const T v, my_real_type_tag) { return real::asinh(v); }
             template <typename T> inline T  atan_impl(const T v, my_real_type_tag) { return real::atan (v); }
-            template <typename T> inline T atanh_impl(const T v, my_real_type_tag) { return (real::log(real::type(1) + v) - log(real::type(1) - v)) / real::type(2); }
+            template <typename T> inline T atanh_impl(const T v, my_real_type_tag) { return real::atanh(v); }
             template <typename T> inline T  ceil_impl(const T v, my_real_type_tag) { return real::ceil (v); }
             template <typename T> inline T   cos_impl(const T v, my_real_type_tag) { return real::cos  (v); }
             template <typename T> inline T  cosh_impl(const T v, my_real_type_tag) { return real::cosh (v); }
@@ -97,24 +99,24 @@ namespace exprtk
             template <typename T> inline T floor_impl(const T v, my_real_type_tag) { return real::floor(v); }
             template <typename T> inline T   log_impl(const T v, my_real_type_tag) { return real::log  (v); }
             template <typename T> inline T log10_impl(const T v, my_real_type_tag) { return real::log10(v); }
-            template <typename T> inline T  log2_impl(const T v, my_real_type_tag) { return real::log(v)/real::type(real::details::constant::log2); }
-            template <typename T> inline T   neg_impl(const T v, my_real_type_tag) { return -v;            }
-            template <typename T> inline T   pos_impl(const T v, my_real_type_tag) { return  v;            }
+            template <typename T> inline T  log2_impl(const T v, my_real_type_tag) { return real::log2 (v); }
+            template <typename T> inline T   neg_impl(const T v, my_real_type_tag) { return -v;             }
+            template <typename T> inline T   pos_impl(const T v, my_real_type_tag) { return  v;             }
             template <typename T> inline T   sin_impl(const T v, my_real_type_tag) { return real::sin  (v); }
             template <typename T> inline T  sinh_impl(const T v, my_real_type_tag) { return real::sinh (v); }
             template <typename T> inline T  sqrt_impl(const T v, my_real_type_tag) { return real::sqrt (v); }
             template <typename T> inline T   tan_impl(const T v, my_real_type_tag) { return real::tan  (v); }
             template <typename T> inline T  tanh_impl(const T v, my_real_type_tag) { return real::tanh (v); }
-            template <typename T> inline T   cot_impl(const T v, my_real_type_tag) { return real::type(1) / real::tan(v); }
-            template <typename T> inline T   sec_impl(const T v, my_real_type_tag) { return real::type(1) / real::cos(v); }
-            template <typename T> inline T   csc_impl(const T v, my_real_type_tag) { return real::type(1) / real::sin(v); }
-            template <typename T> inline T   r2d_impl(const T v, my_real_type_tag) { return (v * real::type(real::details::constant::_180_pi)); }
-            template <typename T> inline T   d2r_impl(const T v, my_real_type_tag) { return (v * real::type(real::details::constant::pi_180));  }
-            template <typename T> inline T   d2g_impl(const T v, my_real_type_tag) { return (v * real::type(20.0/9.0)); }
-            template <typename T> inline T   g2d_impl(const T v, my_real_type_tag) { return (v * real::type(9.0/20.0)); }
-            template <typename T> inline T  notl_impl(const T v, my_real_type_tag) { return (v != real::type(0) ? real::type(0) : real::type(1)); }
-            template <typename T> inline T  frac_impl(const T v, my_real_type_tag) { return (v - static_cast<long long>(v)); }
-            template <typename T> inline T trunc_impl(const T v, my_real_type_tag) { return real::type(static_cast<long long>(v));    }
+            template <typename T> inline T   cot_impl(const T v, my_real_type_tag) { return real::cot  (v); }
+            template <typename T> inline T   sec_impl(const T v, my_real_type_tag) { return real::sec  (v); }
+            template <typename T> inline T   csc_impl(const T v, my_real_type_tag) { return real::csc  (v); }
+            template <typename T> inline T   r2d_impl(const T v, my_real_type_tag) { return real::r2d  (v); }
+            template <typename T> inline T   d2r_impl(const T v, my_real_type_tag) { return real::d2r  (v); }
+            template <typename T> inline T   d2g_impl(const T v, my_real_type_tag) { return real::d2g  (v); }
+            template <typename T> inline T   g2d_impl(const T v, my_real_type_tag) { return real::g2d  (v); }
+            template <typename T> inline T  notl_impl(const T v, my_real_type_tag) { return real::notl (v); }
+            template <typename T> inline T  frac_impl(const T v, my_real_type_tag) { return real::frac (v); }
+            template <typename T> inline T trunc_impl(const T v, my_real_type_tag) { return real::trunc(v); }
 
             template <typename T> inline T const_pi_impl(my_real_type_tag) { return real::details::constant::pi; }
             template <typename T> inline T const_e_impl (my_real_type_tag) { return real::details::constant::e;  }
@@ -129,6 +131,12 @@ namespace exprtk
             inline long long to_int64_impl(const T v, my_real_type_tag)
             {
                return static_cast<long long int>(v);
+            }
+
+            template <typename T>
+            inline unsigned long long to_uint64_impl(const T v, my_real_type_tag)
+            {
+               return static_cast<unsigned long long int>(v);
             }
 
             inline bool is_true_impl (const real::type v)
@@ -161,7 +169,7 @@ namespace exprtk
             template <typename T>
             inline T sgn_impl(const T v, my_real_type_tag)
             {
-                    if (v > T(0)) return T(+1);
+               if      (v > T(0)) return T(+1);
                else if (v < T(0)) return T(-1);
                else               return T( 0);
             }
@@ -185,24 +193,7 @@ namespace exprtk
             template <typename T>
             inline T erf_impl(T v, my_real_type_tag)
             {
-               const T t = T(1) / (T(1) + T(0.5) * abs_impl(v,my_real_type_tag()));
-
-               static const T c[] = {
-                                      T( 1.26551223), T(1.00002368),
-                                      T( 0.37409196), T(0.09678418),
-                                      T(-0.18628806), T(0.27886807),
-                                      T(-1.13520398), T(1.48851587),
-                                      T(-0.82215223), T(0.17087277)
-                                    };
-
-               T result = T(1) - t * exp_impl((-v * v) -
-                                      c[0] + t * (c[1] + t *
-                                     (c[2] + t * (c[3] + t *
-                                     (c[4] + t * (c[5] + t *
-                                     (c[6] + t * (c[7] + t *
-                                     (c[8] + t * (c[9]))))))))),my_real_type_tag());
-
-               return (v >= T(0)) ? result : -result;
+               return real::erf(v);
             }
 
             template <typename T>
@@ -214,10 +205,7 @@ namespace exprtk
             template <typename T>
             inline T ncdf_impl(T v, my_real_type_tag)
             {
-               T cnd = T(0.5) * (T(1) + erf_impl(
-                                           abs_impl(v,my_real_type_tag()) /
-                                           T(real::details::constant::sqrt2),my_real_type_tag()));
-               return  (v < T(0)) ? (T(1) - cnd) : cnd;
+               return T(0.5) * erfc_impl(-(v / T(numeric::constant::sqrt2)),my_real_type_tag());
             }
 
             template <typename T>
@@ -281,7 +269,7 @@ namespace exprtk
             template <typename T>
             inline T roundn_impl(const T v0, const T v1, my_real_type_tag)
             {
-               const int index = std::max<int>(0, std::min<int>(pow10_size - 1, (int)floor(v1)));
+               const int index = std::max<int>(0, std::min<int>(pow10_size - 1, static_cast<int>(floor(v1))));
                const T p10 = T(pow10[index]);
                if (v0 < T(0))
                   return T(ceil ((v0 * p10) - T(0.5)) / p10);
@@ -366,9 +354,25 @@ namespace exprtk
    {
       namespace details
       {
-         inline void print_type(const std::string& fmt, const real::type v, exprtk::details::numeric::details::my_real_type_tag)
+         inline void print_type(const std::string& fmt, const real::type& v, exprtk::details::numeric::details::my_real_type_tag)
          {
-            printf(fmt.c_str(),(double)v);
+            #if defined(__clang__)
+               #pragma clang diagnostic push
+               #pragma clang diagnostic ignored "-Wformat-nonliteral"
+            #elif defined(__GNUC__) || defined(__GNUG__)
+               #pragma GCC diagnostic push
+               #pragma GCC diagnostic ignored "-Wformat-nonliteral"
+            #elif defined(_MSC_VER)
+            #endif
+
+            printf(fmt.c_str(),static_cast<double>(v));
+
+            #if defined(__clang__)
+               #pragma clang diagnostic pop
+            #elif defined(__GNUC__) || defined(__GNUG__)
+               #pragma GCC diagnostic pop
+            #elif defined(_MSC_VER)
+            #endif
          }
       }
    }}

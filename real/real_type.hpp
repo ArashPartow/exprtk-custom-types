@@ -3,14 +3,15 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Simple Real Type Example                                   *
- * Authors: Arash Partow                                      *
- * URL: http://www.partow.net/programming/exprtk/index.html   *
+ * Authors: Arash Partow (1999-2024)                          *
+ * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
  * Free use of the Mathematical Expression Toolkit Library is *
  * permitted under the guidelines and in accordance with the  *
  * most current version of the MIT License.                   *
- * http://www.opensource.org/licenses/MIT                     *
+ * https://www.opensource.org/licenses/MIT                    *
+ * SPDX-License-Identifier: MIT                               *
  *                                                            *
  **************************************************************
 */
@@ -43,13 +44,13 @@ namespace real
 
       template <typename T>
       explicit type(const T& d)
-      : d_((double)d)
+      : d_(static_cast<double>(d))
       {}
 
       type& operator=(const double &d) { d_ = d; return *this; }
 
       template <typename T>
-      type& operator=(const T d) { d_ = (double)d; return *this; }
+      type& operator=(const T d) { d_ = static_cast<double>(d); return *this; }
 
       inline type& operator  =(const type& r) { d_  = r.d_; return *this; }
       inline type& operator +=(const type& r) { d_ += r.d_; return *this; }
@@ -170,23 +171,26 @@ namespace real
    {
       namespace constant
       {
-         static const type e       =  2.718281828459045235360;
-         static const type pi      =  3.141592653589793238462;
-         static const type pi_2    =  1.570796326794896619231;
-         static const type pi_4    =  0.785398163397448309616;
-         static const type pi_180  =  0.017453292519943295769;
-         static const type _1_pi   =  0.318309886183790671538;
-         static const type _2_pi   =  0.636619772367581343076;
-         static const type _180_pi = 57.295779513082320876798;
-         static const type log2    =  0.693147180559945309417;
-         static const type sqrt2   =  1.414213562373095048801;
+         static const double e       =  2.71828182845904523536028747135266249775724709369996;
+         static const double pi      =  3.14159265358979323846264338327950288419716939937510;
+         static const double pi_2    =  1.57079632679489661923132169163975144209858469968755;
+         static const double pi_4    =  0.78539816339744830961566084581987572104929234984378;
+         static const double pi_180  =  0.01745329251994329576923690768488612713442871888542;
+         static const double _1_pi   =  0.31830988618379067153776752674502872406891929148091;
+         static const double _2_pi   =  0.63661977236758134307553505349005744813783858296183;
+         static const double _180_pi = 57.29577951308232087679815481410517033240547246656443;
+         static const double log2    =  0.69314718055994530941723212145817656807550013436026;
+         static const double sqrt2   =  1.41421356237309504880168872420969807856967187537695;
       }
    }
 
    inline type   abs(const type v) { return std::abs  (v.d_); }
    inline type  acos(const type v) { return std::acos (v.d_); }
+   inline type acosh(const type v) { return std::acosh(v.d_); }
    inline type  asin(const type v) { return std::asin (v.d_); }
+   inline type asinh(const type v) { return std::asinh(v.d_); }
    inline type  atan(const type v) { return std::atan (v.d_); }
+   inline type atanh(const type v) { return std::atanh(v.d_); }
    inline type  ceil(const type v) { return std::ceil (v.d_); }
    inline type   cos(const type v) { return std::cos  (v.d_); }
    inline type  cosh(const type v) { return std::cosh (v.d_); }
@@ -194,7 +198,7 @@ namespace real
    inline type floor(const type v) { return std::floor(v.d_); }
    inline type   log(const type v) { return std::log  (v.d_); }
    inline type log10(const type v) { return std::log10(v.d_); }
-   inline type  log2(const type v) { return std::log(v.d_) / type(details::constant::log2); }
+   inline type  log2(const type v) { return std::log(v.d_) / type(real::details::constant::log2); }
    inline type   neg(const type v) { return type(-1.0) * v;   }
    inline type   pos(const type v) { return v;                }
    inline type   sin(const type v) { return std::sin  (v.d_); }
@@ -205,13 +209,13 @@ namespace real
    inline type   cot(const type v) { return type(1) / std::tan(v.d_); }
    inline type   sec(const type v) { return type(1) / std::cos(v.d_); }
    inline type   csc(const type v) { return type(1) / std::sin(v.d_); }
-   inline type   r2d(const type v) { return (v.d_ * type(details::constant::_180_pi)); }
-   inline type   d2r(const type v) { return (v.d_ * type(details::constant::pi_180));  }
-   inline type   d2g(const type v) { return (v.d_ * type(20.0/9.0)); }
-   inline type   g2d(const type v) { return (v.d_ * type(9.0/20.0)); }
+   inline type   r2d(const type v) { return (v.d_ * type(real::details::constant::_180_pi)); }
+   inline type   d2r(const type v) { return (v.d_ * type(real::details::constant::pi_180));  }
+   inline type   d2g(const type v) { return (v.d_ * type(10.0/9.0)); }
+   inline type   g2d(const type v) { return (v.d_ * type(9.0/10.0)); }
    inline type  notl(const type v) { return (v    != type(0) ? type(0) : type(1)); }
    inline type  frac(const type v) { return (v.d_ - static_cast<long long>(v.d_)); }
-   inline type trunc(const type v) { return type((double)static_cast<long long>(v.d_));    }
+   inline type trunc(const type v) { return type(static_cast<double>(static_cast<long long>(v.d_))); }
 
    inline type modulus(const type v0, const type v1) { return std::fmod(v0.d_,v1.d_);            }
    inline type     pow(const type v0, const type v1) { return std::pow(v0.d_,v1.d_);             }
@@ -320,6 +324,7 @@ namespace real
 
    inline type erf(type v)
    {
+      #if defined(_MSC_VER) && (_MSC_VER < 1900)
       const type t = type(1) / (type(1) + type(0.5) * abs(v));
 
       static const type c[] = {
@@ -338,6 +343,9 @@ namespace real
                             (c[8] + t * (c[9]))))))))));
 
       return (v >= type(0)) ? result : -result;
+      #else
+      return ::erf(static_cast<double>(v));
+      #endif
    }
 
    inline type erfc(type v)
