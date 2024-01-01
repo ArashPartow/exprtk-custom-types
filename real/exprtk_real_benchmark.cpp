@@ -3,14 +3,15 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * ExprTk custom Real vs Native Benchmarks                    *
- * Author: Arash Partow (1999-2019)                           *
- * URL: http://www.partow.net/programming/exprtk/index.html   *
+ * Author: Arash Partow (1999-2024)                           *
+ * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
  * Free use of the Mathematical Expression Toolkit Library is *
  * permitted under the guidelines and in accordance with the  *
  * most current version of the MIT License.                   *
- * http://www.opensource.org/licenses/MIT                     *
+ * https://www.opensource.org/licenses/MIT                    *
+ * SPDX-License-Identifier: MIT                               *
  *                                                            *
  **************************************************************
 */
@@ -28,25 +29,26 @@
 #include "exprtk.hpp"
 
 
-const std::string expression_list[] = {
-                                         "(y + x)",
-                                         "2 * (y + x)",
-                                         "(2 * y + 2 * x)",
-                                         "((1.23 * x^2) / y) - 123.123",
-                                         "(y + x / y) * (x - y / x)",
-                                         "x / ((x + y) + (x - y)) / y",
-                                         "1 - ((x * y) + (y / x)) - 3",
-                                         "(5.5 + x) + (2 * x - 2 / 3 * y) * (x / 3 + y / 4) + (y + 7.7)",
-                                         "1.1x^1 + 2.2y^2 - 3.3x^3 + 4.4y^15 - 5.5x^23 + 6.6y^55",
-                                         "sin(2 * x) + cos(pi / y)",
-                                         "1 - sin(2 * x) + cos(pi / y)",
-                                         "sqrt(111.111 - sin(2 * x) + cos(pi / y) / 333.333)",
-                                         "(x^2 / sin(2 * pi / y)) - x / 2",
-                                         "x + (cos(y - sin(2 / x * pi)) - sin(x - cos(2 * y / pi))) - y",
-                                         "clamp(-1.0, sin(2 * pi * x) + cos(y / 2 * pi), +1.0)",
-                                         "max(3.33, min(sqrt(1 - sin(2 * x) + cos(pi / y) / 3), 1.11))",
-                                         "if((y + (x * 2.2)) <= (x + y + 1.1), x - y, x * y) + 2 * pi / x"
-                                      };
+static const std::string expression_list[] =
+{
+   "(y + x)",
+   "2 * (y + x)",
+   "(2 * y + 2 * x)",
+   "((1.23 * x^2) / y) - 123.123",
+   "(y + x / y) * (x - y / x)",
+   "x / ((x + y) + (x - y)) / y",
+   "1 - ((x * y) + (y / x)) - 3",
+   "(5.5 + x) + (2 * x - 2 / 3 * y) * (x / 3 + y / 4) + (y + 7.7)",
+   "1.1x^1 + 2.2y^2 - 3.3x^3 + 4.4y^15 - 5.5x^23 + 6.6y^55",
+   "sin(2 * x) + cos(pi / y)",
+   "1 - sin(2 * x) + cos(pi / y)",
+   "sqrt(111.111 - sin(2 * x) + cos(pi / y) / 333.333)",
+   "(x^2 / sin(2 * pi / y)) - x / 2",
+   "x + (cos(y - sin(2 / x * pi)) - sin(x - cos(2 * y / pi))) - y",
+   "clamp(-1.0, sin(2 * pi * x) + cos(y / 2 * pi), +1.0)",
+   "max(3.33, min(sqrt(1 - sin(2 * x) + cos(pi / y) / 3), 1.11))",
+   "if((y + (x * 2.2)) <= (x + y + 1.1), x - y, x * y) + 2 * pi / x"
+};
 
 const std::size_t expression_list_size = sizeof(expression_list) / sizeof(std::string);
 
@@ -371,8 +373,6 @@ int main(int argc, char* argv[])
 
 void pgo_primer()
 {
-   exprtk::pgo_primer<real::type>();
-
    static const real::type lower_bound_x = -50.0;
    static const real::type lower_bound_y = -50.0;
    static const real::type upper_bound_x = +50.0;
@@ -554,7 +554,7 @@ void perform_file_based_benchmark(const std::string& file_name, const std::size_
              static_cast<int>(expression_list.size()),
              (timer.time() * 1000000000.0) / (1.0 * rounds),
              static_cast<int>(timer.time() * 1000000000.0),
-             (double)sum,
+             static_cast<double>(sum),
              expr_str_list[i].c_str());
 
       fflush(stdout);
@@ -571,5 +571,5 @@ void perform_file_based_benchmark(const std::string& file_name, const std::size_
           total_timer.time());
 
    printf("[*] Total Single Eval Time: %9.3fms\n",
-          (double)single_eval_total_time / 1000000.0);
+          static_cast<double>(single_eval_total_time / 1000000.0));
 }

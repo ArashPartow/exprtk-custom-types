@@ -3,14 +3,15 @@
 # *         C++ Mathematical Expression Toolkit Library        *
 # *                                                            *
 # * ExprTk MPFR                                                *
-# * Author: Arash Partow                                       *
-# * URL: http://www.partow.net/programming/exprtk/index.html   *
+# * Author: Arash Partow (1999-2024)                           *
+# * URL: https://www.partow.net/programming/exprtk/index.html  *
 # *                                                            *
 # * Copyright notice:                                          *
 # * Free use of the Mathematical Expression Toolkit Library is *
 # * permitted under the guidelines and in accordance with the  *
 # * most current version of the MIT License.                   *
-# * http://www.opensource.org/licenses/MIT                     *
+# * https://www.opensource.org/licenses/MIT                    *
+# * SPDX-License-Identifier: MIT                               *
 # *                                                            *
 # **************************************************************
 #
@@ -18,7 +19,7 @@
 
 COMPILER         = -c++
 #COMPILER        = -clang++
-OPTIMIZATION_OPT = -O1
+OPTIMIZATION_OPT = -O1 -DNDEBUG
 BASE_OPTIONS     = -pedantic-errors -Wall -Wextra -Werror -Wno-long-long -std=c++11
 OPTIONS          = $(BASE_OPTIONS) $(OPTIMIZATION_OPT)
 LINKER_OPT       = -L/usr/lib -lstdc++ -lm -lmpfr
@@ -29,7 +30,7 @@ BUILD_LIST+=exprtk_mpfr_repl
 
 all: $(BUILD_LIST)
 
-$(BUILD_LIST) : %: %.cpp exprtk.hpp
+$(BUILD_LIST) : %: %.cpp exprtk_mpfr_adaptor.hpp exprtk.hpp
 	$(COMPILER) $(OPTIONS) -o $@ $@.cpp $(LINKER_OPT)
 
 pgo: exprtk_mpfr_benchmark.cpp exprtk_mpfr_adaptor.hpp exprtk.hpp

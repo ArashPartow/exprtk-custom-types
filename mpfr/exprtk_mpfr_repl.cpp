@@ -3,14 +3,15 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * ExprTk MPFR REPL Interface                                 *
- * Author: Arash Partow                                       *
- * URL: http://www.partow.net/programming/exprtk/index.html   *
+ * Author: Arash Partow (1999-2024)                           *
+ * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
  * Free use of the Mathematical Expression Toolkit Library is *
  * permitted under the guidelines and in accordance with the  *
  * most current version of the MIT License.                   *
- * http://www.opensource.org/licenses/MIT                     *
+ * https://www.opensource.org/licenses/MIT                    *
+ * SPDX-License-Identifier: MIT                               *
  *                                                            *
  **************************************************************
 */
@@ -1080,13 +1081,14 @@ Example REPL Instructions:
 
  Step 2.Enter the following multi-line program:
  --- snip ---
- $begin
- x := 3;
- y := 4;
- z := sin(x / pi) * cos(y * pi);
- println(result := z / 2);
- result;
- $end
+
+$begin
+var x := 3;
+var y := 4;
+var z := sin(x / pi) * cos(y * pi);
+println(z / 2);
+$end
+
  --- snip ---
 
 
@@ -1099,6 +1101,7 @@ Example REPL Instructions:
  Step 4.2 Enter: $load mandelbrot.txt
 
 ---- snip ----
+
 var width    := 118;
 var height   := 41;
 var imag_max := +1;
@@ -1110,34 +1113,36 @@ var y_step   := (imag_max - imag_min) / height;
 
 for (var y := 0; y < height; y += 1)
 {
-  var imag := imag_min + (y_step * y);
-  for (var x := 0; x < width; x += 1)
-  {
-    var real   := real_min + x_step * x;
-    var z_real := real;
-    var z_imag := imag;
-    var plot_value := 0;
+   var imag := imag_min + (y_step * y);
 
-    for (var n := 0; n < 30; n += 1)
-    {
-      var a := z_real^2;
-      var b := z_imag^2;
+   for (var x := 0; x < width; x += 1)
+   {
+      var real       := real_min + x_step * x;
+      var z_real     := real;
+      var z_imag     := imag;
+      var plot_value := 0;
 
-      plot_value := n;
-
-      if ((a + b) < 4)
+      for (var n := 0; n < 30; n += 1)
       {
-        z_imag := 2 * z_real * z_imag + imag;
-        z_real := a - b + real;
-      }
-      else
-        break;
-    };
+         var a := z_real^2;
+         var b := z_imag^2;
 
-    putch(61 - plot_value);
+         plot_value := n;
 
-  };
-  println()
+         if ((a + b) < 4)
+         {
+            z_imag := 2 * z_real * z_imag + imag;
+            z_real := a - b + real;
+         }
+         else
+            break;
+      };
+
+      putch(61 - plot_value);
+
+   };
+
+   println()
 }
 
 ---- snip ----
@@ -1147,22 +1152,24 @@ for (var y := 0; y < height; y += 1)
 ---- snip ----
 $function is_prime(x)
 {
-  if (x == 1)
-    return [false];
-  else if (x == 2)
-    return [true];
-  else if ((x % 2) == 0)
-    return [false];
+   if (x == 1)
+      return [false];
+   else if (x == 2)
+      return [true];
+   else if ((x % 2) == 0)
+      return [false];
 
-  var upper_bound := sqrt(x) + 1;
+   var upper_bound := sqrt(x) + 1;
 
-  for (var i := 3; i <= upper_bound; i += 2)
-  {
-    if (0 == (x % i))
-      return[false];
-  }
+   for (var i := 3; i <= upper_bound; i += 2)
+   {
+      if (0 == (x % i))
+      {
+         return[false];
+      }
+   };
 
-  return [true];
+   return [true];
 }
 $end
 
@@ -1170,7 +1177,9 @@ $begin
 for (var i := 1; i < 50; i += 1)
 {
    if (is_prime(i))
-     println(i);
+   {
+      println(i);
+   }
 }
 $end
 
@@ -1179,13 +1188,15 @@ $end
 
  Step 6.1 Copy into the REPL the contents of the snippet below:
 ---- snip ----
+
 $begin
 var s := 'abcdefghijkl';
 for (var i := 0; i < (s[] / 2); i+= 1)
 {
    var j := s[] - i - 1;
-   s[i:i] <=> s[j:j];
-}
+   s[i:i + 1] <=> s[j:j + 1];
+};
+
 println(s)
 $end
 
@@ -1209,14 +1220,14 @@ for (var i := 0; i < vec[]; i += 1)
 
    if (curr_sum < zero)
    {
-     curr_sum   := 0;
-     curr_start := i + 1;
+      curr_sum   := 0;
+      curr_start := i + 1;
    }
    else if (curr_sum > max_sum)
    {
-     max_sum   := curr_sum;
-     max_start := curr_start;
-     max_end   := i;
+      max_sum   := curr_sum;
+      max_start := curr_start;
+      max_end   := i;
    }
 }
 
@@ -1240,60 +1251,62 @@ $end
 
 $function is_prime(x)
 {
-  if (x <= 0)
-    return [false];
-  else if (frac(x) != 0)
-    return [false];
-  else
-  {
-    switch
-    {
-      case 1 == x : return [false];
-      case 2 == x : return [true ];
-      default     :
+   if (x <= 0)
+      return [false];
+   else if (frac(x) != 0)
+      return [false];
+   else
+   {
+      switch
       {
-        var prime_lut[160] :=
-             {
-                 2,  3,  5,  7, 11, 13, 17, 19, 23, 29,
-                31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
-                73, 79, 83, 89, 97,101,103,107,109,113,
-               127,131,137,139,149,151,157,163,167,173,
-               179,181,191,193,197,199,211,223,227,229,
-               233,239,241,251,257,263,269,271,277,281,
-               283,293,307,311,313,317,331,337,347,349,
-               353,359,367,373,379,383,389,397,401,409,
-               419,421,431,433,439,443,449,457,461,463,
-               467,479,487,491,499,503,509,521,523,541,
-               547,557,563,569,571,577,587,593,599,601,
-               607,613,617,619,631,641,643,647,653,659,
-               661,673,677,683,691,701,709,719,727,733,
-               739,743,751,757,761,769,773,787,797,809,
-               811,821,823,827,829,839,853,857,859,863,
-               877,881,883,887,907,911,919,929,937,941
-             };
+         case 1 == x : return [false];
+         case 2 == x : return [true ];
+         default     :
+         {
+            var prime_lut[160] :=
+            {
+                 2,   3,   5,   7,  11,  13,  17,  19,  23,  29,
+                31,  37,  41,  43,  47,  53,  59,  61,  67,  71,
+                73,  79,  83,  89,  97, 101, 103, 107, 109, 113,
+               127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
+               179, 181, 191, 193, 197, 199, 211, 223, 227, 229,
+               233, 239, 241, 251, 257, 263, 269, 271, 277, 281,
+               283, 293, 307, 311, 313, 317, 331, 337, 347, 349,
+               353, 359, 367, 373, 379, 383, 389, 397, 401, 409,
+               419, 421, 431, 433, 439, 443, 449, 457, 461, 463,
+               467, 479, 487, 491, 499, 503, 509, 521, 523, 541,
+               547, 557, 563, 569, 571, 577, 587, 593, 599, 601,
+               607, 613, 617, 619, 631, 641, 643, 647, 653, 659,
+               661, 673, 677, 683, 691, 701, 709, 719, 727, 733,
+               739, 743, 751, 757, 761, 769, 773, 787, 797, 809,
+               811, 821, 823, 827, 829, 839, 853, 857, 859, 863,
+               877, 881, 883, 887, 907, 911, 919, 929, 937, 941
+            };
 
-        var upper_bound := min(x - 1,trunc(sqrt(x)) + 1);
+            var upper_bound := min(x - 1,trunc(sqrt(x)) + 1);
 
-        for (var i := 0; i < prime_lut[]; i += 1)
-        {
-          if (prime_lut[i] >= upper_bound)
-            break;
-          else if ((x % prime_lut[i]) == 0)
-            return [false];
-        };
+            for (var i := 0; i < prime_lut[]; i += 1)
+            {
+               if (prime_lut[i] >= upper_bound)
+                  return [true];
+               else if ((x % prime_lut[i]) == 0)
+                  return [false];
+            };
 
-        var lower_bound := prime_lut[prime_lut[] - 1] + 2;
+            var lower_bound := prime_lut[prime_lut[] - 1] + 2;
 
-        for (var i := lower_bound; i < upper_bound; i += 2)
-        {
-          if ((x % i) == 0)
-            return [false];
-        }
-      };
-    }
-  };
+            for (var i := lower_bound; i < upper_bound; i += 2)
+            {
+               if ((x % i) == 0)
+               {
+                  return [false];
+               }
+            }
+         };
+      }
+   };
 
-  return [true];
+   return [true];
 }
 
 var prime_count := 0;
@@ -1301,7 +1314,9 @@ var prime_count := 0;
 for (var i := 1; i < 10^6; i += 1)
 {
    if (is_prime(i))
-     prime_count += 1;
+   {
+      prime_count += 1;
+   }
 };
 
 prime_count
@@ -1313,13 +1328,12 @@ Step 9.1 Copy into the REPL the contents of the snippet below:
 ---- snip ----
 $begin
 var file := open('file.txt','w');
-
-var s := 'Hello world...\n';
+var s    := 'Hello world...\n';
 
 for (var i := 0; i < 10; i += 1)
 {
-  write(file,s);
-}
+   write(file,s);
+};
 
 close(file);
 
@@ -1330,12 +1344,13 @@ var i := 0;
 
 while (not(eof(file)))
 {
-  s := getline(file);
-  if (s[] > 0)
-  {
-    println('[',i+=1,'] - ',s);
-  }
-}
+   s := getline(file);
+
+   if (s[] > 0)
+   {
+      println('[',i+=1,'] - ',s);
+   }
+};
 
 close(file);
 $end
@@ -1349,35 +1364,67 @@ var v0[1000] := [rnd_01];
 var v1[1000] := [0];
 
 ~{
-   var file := open('data.dat','w');
+ var file := open('data.dat','w');
 
-   if (not(write(file,v0)))
-   {
-     println('failed to write vector 0\n');
-     return [false];
-   }
-   close(file);
+ if (not(write(file,v0)))
+ {
+    println('failed to write vector 0\n');
+    return [false];
+ };
+
+ close(file);
  };
 
 ~{
-   var file := open('data.dat','r');
+    var file := open('data.dat','r');
 
-   if (not(read(file,v1)))
-   {
-     println('failed to read vector 1\n');
-     return [false];
-   }
-   close(file);
+    if (not(read(file,v1)))
+    {
+       println('failed to read vector 1\n');
+       return [false];
+    };
+
+    close(file);
  };
 
 if (sum(v0 != v1) > 0)
-  println('error: v0 != v1');
+   println('error: v0 != v1');
 else
 {
-  println('success: v0 == v1');
-  println('sum(v0) = ',sum(v0),'  avg(v0) = ',avg(v0));
-  println('sum(v1) = ',sum(v1),'  avg(v1) = ',avg(v1));
+   println('success: v0 == v1');
+   println('sum(v0) = ',sum(v0),'  avg(v0) = ',avg(v0));
+   println('sum(v1) = ',sum(v1),'  avg(v1) = ',avg(v1));
 }
 $end
 ---- snip ----
+
+
+Step 11.1 Copy into the REPL the contents of the snippet below:
+---- snip ----
+$function fibonacci(x)
+{
+   switch
+   {
+      case x == 0 : 0;
+      case x == 1 : 1;
+      default     :
+      {
+         var prev := 0;
+         var curr := 1;
+         while ((x -= 1) > 0)
+         {
+            curr += (curr <=> prev);
+         };
+      };
+   }
+}
+
+for (var i := 0; i < 20; i += 1)
+{
+   println(i, ' = ', fibonacci(i));
+};
+
+$end
+---- snip ----
+
 */
