@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Simple Complex Type Example                                *
- * Author: Arash Partow (1999-2024)                           *
+ * Author: Arash Partow (1999-2025)                           *
  * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
@@ -196,8 +196,8 @@ namespace cmplx
    inline complex_t   csc(const complex_t v) { return complex_t(1.0 / std::sin(v.c_)); }
    inline complex_t   r2d(const complex_t v) { return complex_t(v.c_ * details::constant::_180_pi.c_); }
    inline complex_t   d2r(const complex_t v) { return complex_t(v.c_ * details::constant::pi_180.c_ ); }
-   inline complex_t   d2g(const complex_t v) { return complex_t(v.c_ * (20.0/9.0)); }
-   inline complex_t   g2d(const complex_t v) { return complex_t(v.c_ * (9.0/20.0)); }
+   inline complex_t   d2g(const complex_t v) { return complex_t(v.c_ * (10.0/9.0)); }
+   inline complex_t   g2d(const complex_t v) { return complex_t(v.c_ * (9.0/10.0)); }
    inline complex_t  notl(const complex_t v) { return complex_t(v    != complex_t(0) ? complex_t(0) : complex_t(1)); }
    inline complex_t  frac(const complex_t v) { return complex_t(v.c_.real() - static_cast<long long>(v.c_.real()));  }
    inline complex_t trunc(const complex_t v) { return complex_t((double)static_cast<long long>(v.c_.real()));        }

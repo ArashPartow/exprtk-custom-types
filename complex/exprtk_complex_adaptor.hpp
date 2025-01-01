@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Custom Complex type Adaptor                                *
- * Author: Arash Partow (1999-2024)                           *
+ * Author: Arash Partow (1999-2025)                           *
  * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
@@ -112,8 +112,8 @@ namespace exprtk
             template <typename T> inline T   csc_impl(const T v, complex_type_tag) { return cmplx::complex_t(1) / cmplx::sin(v); }
             template <typename T> inline T   r2d_impl(const T v, complex_type_tag) { return (v * cmplx::complex_t(constant::_180_pi)); }
             template <typename T> inline T   d2r_impl(const T v, complex_type_tag) { return (v * cmplx::complex_t(constant::pi_180));  }
-            template <typename T> inline T   d2g_impl(const T v, complex_type_tag) { return (v * cmplx::complex_t(20.0/9.0)); }
-            template <typename T> inline T   g2d_impl(const T v, complex_type_tag) { return (v * cmplx::complex_t(9.0/20.0)); }
+            template <typename T> inline T   d2g_impl(const T v, complex_type_tag) { return (v * cmplx::complex_t(10.0/9.0)); }
+            template <typename T> inline T   g2d_impl(const T v, complex_type_tag) { return (v * cmplx::complex_t(9.0/10.0)); }
             template <typename T> inline T  notl_impl(const T v, complex_type_tag) { return (v != cmplx::complex_t(0) ? cmplx::complex_t(0) : cmplx::complex_t(1)); }
             template <typename T> inline T  frac_impl(const T v, complex_type_tag) { return cmplx::frac(v); }
             template <typename T> inline T trunc_impl(const T v, complex_type_tag) { return cmplx::trunc(v); }

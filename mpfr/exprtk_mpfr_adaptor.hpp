@@ -311,7 +311,15 @@ namespace exprtk
             template <typename T>
             inline T root_impl(const T& v0, const T& v1, mpfrreal_type_tag)
             {
-               return mpfr::pow(v0,T(1) / v1);
+               if (v0 < T(0))
+               {
+                  return (v1 == trunc_impl(v1, mpfrreal_type_tag())) &&
+                         (modulus_impl(v1, T(2), mpfrreal_type_tag()) != T(0)) ?
+                         -pow(abs_impl(v0, mpfrreal_type_tag()), T(1) / v1) :
+                          T().setNan();
+               }
+
+               return pow(v0, T(1) / v1);
             }
 
             template <typename T>

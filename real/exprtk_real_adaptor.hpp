@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Custom Real type Adaptor                                   *
- * Authors: Arash Partow (1999-2024)                          *
+ * Authors: Arash Partow (1999-2025)                          *
  * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
@@ -286,7 +286,15 @@ namespace exprtk
             template <typename T>
             inline T root_impl(const T v0, const T v1, my_real_type_tag)
             {
-               return pow(v0,T(1) / v1);
+               if (v0 < T(0))
+               {
+                  return (v1 == trunc_impl(v1, my_real_type_tag())) &&
+                         (modulus_impl(v1, T(2), my_real_type_tag()) != T(0)) ?
+                         -pow(abs_impl(v0, my_real_type_tag()), T(1) / v1) :
+                          std::numeric_limits<T>::quiet_NaN();
+               }
+
+               return pow(v0, T(1) / v1);
             }
 
             template <typename T>

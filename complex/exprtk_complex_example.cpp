@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Example using a simple Complex type                        *
- * Author: Arash Partow (1999-2024)                           *
+ * Author: Arash Partow (1999-2025)                           *
  * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
@@ -45,10 +45,10 @@ void complex_numbers()
    T y = T(2.2,0.0);
    T v[5];
 
-   symbol_table.add_variable ("i" , i );
-   symbol_table.add_variable ("x" , x );
-   symbol_table.add_variable ("y" , y );
-   symbol_table.add_vector   ("v" , v );
+   symbol_table.add_contant ("i" , i );
+   symbol_table.add_variable("x" , x );
+   symbol_table.add_variable("y" , y );
+   symbol_table.add_vector  ("v" , v );
 
    for (std::size_t i = 0; i < expressions.size(); ++i)
    {

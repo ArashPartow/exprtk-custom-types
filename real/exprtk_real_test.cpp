@@ -3,7 +3,7 @@
  *         C++ Mathematical Expression Toolkit Library        *
  *                                                            *
  * Examples and Unit-Tests using a simple custom Real type    *
- * Author: Arash Partow (1999-2024)                           *
+ * Author: Arash Partow (1999-2025)                           *
  * URL: https://www.partow.net/programming/exprtk/index.html  *
  *                                                            *
  * Copyright notice:                                          *
@@ -1097,27 +1097,27 @@ static const test_t global_test_list[] =
    test_t("((1 + 1) < (3 + 3) ? 7 : 9) == 7",1.0),
    test_t("(min(1,2) ? 1 + 3 : 1 + 4) == 4",1.0),
    test_t("(min(0,1) ? 1 + 3 : 1 + 4) == 5",1.0),
-   test_t("if (1 < 2) 3; == 3",1.0),
-   test_t("if (1 > 2) 3; == null",1.0),
-   test_t("if (1 < 2) 3; else 4; == 3",1.0),
-   test_t("if (1 > 2) 3; else 4; == 4",1.0),
+   test_t("(if (1 < 2) 3;) == 3",1.0),
+   test_t("(if (1 > 2) 3;) == null",1.0),
+   test_t("(if (1 < 2) 3; else 4;) == 3",1.0),
+   test_t("(if (1 > 2) 3; else 4;) == 4",1.0),
    test_t("if (1 < 2) 3; else {1+2; 4;} == 3",1.0),
    test_t("if (1 > 2) 3; else {1+2; 4;} == 4",1.0),
-   test_t("if (1 < 2) 3; else if (1 < 2) 4; == 3",1.0),
-   test_t("if (1 > 2) 3; else if (1 < 2) 4; == 4",1.0),
-   test_t("if (1 > 2) 3; else if (1 > 2) 4; == null",1.0),
+   test_t("(if (1 < 2) 3; else if (1 < 2) 4;) == 3",1.0),
+   test_t("(if (1 > 2) 3; else if (1 < 2) 4;) == 4",1.0),
+   test_t("(if (1 > 2) 3; else if (1 > 2) 4;) == null",1.0),
    test_t("if (1 < 2) 3; else if (1 < 2) {1+2; 4;} == 3",1.0),
    test_t("if (1 > 2) 3; else if (1 < 2) {1+2; 4;} == 4",1.0),
    test_t("if (1 > 2) 3; else if (1 > 2) {1+2; 4;} == null",1.0),
    test_t("if (1 < 2) { 1+2; 3;} == 3",1.0),
    test_t("if (1 > 2) { 1+2; 3;} == null",1.0),
-   test_t("if (1 < 2) { 1+2; 3;} else 4; == 3",1.0),
-   test_t("if (1 > 2) { 1+2; 3;} else 4; == 4",1.0),
+   test_t("(if (1 < 2) { 1+2; 3;} else 4;) == 3",1.0),
+   test_t("(if (1 > 2) { 1+2; 3;} else 4;) == 4",1.0),
    test_t("if (1 < 2) { 1+2; 3;} else {1+2; 4;} == 3",1.0),
    test_t("if (1 > 2) { 1+2; 3;} else {1+2; 4;} == 4",1.0),
-   test_t("if (1 < 2) { 1+2; 3;} else if (1 < 2) 4; == 3",1.0),
-   test_t("if (1 > 2) { 1+2; 3;} else if (1 < 2) 4; == 4",1.0),
-   test_t("if (1 > 2) { 1+2; 3;} else if (1 > 2) 4; == null",1.0),
+   test_t("(if (1 < 2) { 1+2; 3;} else if (1 < 2) 4;) == 3",1.0),
+   test_t("(if (1 > 2) { 1+2; 3;} else if (1 < 2) 4;) == 4",1.0),
+   test_t("(if (1 > 2) { 1+2; 3;} else if (1 > 2) 4;) == null",1.0),
    test_t("if (1 < 2) { 1+2; 3;} else if (1 < 2) {1+2; 4;} == 3",1.0),
    test_t("if (1 > 2) { 1+2; 3;} else if (1 < 2) {1+2; 4;} == 4",1.0),
    test_t("if (1 > 2) { 1+2; 3;} else if (1 > 2) {1+2; 4;} == null",1.0)
@@ -1241,12 +1241,14 @@ struct edge_cases<numeric_type>
 };
 
 template <typename T>
-inline bool run_test00()
+bool run_test00()
 {
    const std::size_t rounds = 10;
+
    for (std::size_t r = 0; r < rounds; ++r)
    {
       bool result = true;
+
       for (std::size_t i = 0; i < global_test_list_size; ++i)
       {
          if (!test_expression<T>(global_test_list[i].first,T(global_test_list[i].second)))
@@ -1320,7 +1322,7 @@ struct test_xyzw
 };
 
 template <typename T>
-inline bool run_test01()
+bool run_test01()
 {
    {
       static const test_xy<T> test_list[] =
@@ -1863,18 +1865,18 @@ inline bool run_test01()
          test_xyzw<T>("(4 + [3 / (min(x,y) + z)])",T(5.0),T(7.0),T(9.0),T(0.0),T((4.0 + (3.0 / (std::min(5.0,7.0) + 9.0))))),
          test_xyzw<T>("(4 * [3 / (min(x,y) + z)])",T(5.0),T(7.0),T(9.0),T(0.0),T((4.0 * (3.0 / (std::min(5.0,7.0) + 9.0))))),
          test_xyzw<T>("(4 / [3 / (min(x,y) + z)])",T(5.0),T(7.0),T(9.0),T(0.0),T((4.0 / (3.0 / (std::min(5.0,7.0) + 9.0))))),
-         test_xyzw<T>("if (x < y) { z+2; z;} == z"                             ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} == null"                          ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x < y) { z+2; z;} else w; == z"                     ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} else 1 + w; == (w + 1)"           ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x < y) { z+2; z;} else {1+2; w;} == z"              ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} else {1+2; w;} == w"              ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x < y) { z+2; z;} else if (x < y) w; == z"          ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} else if (x < y) 1 + w; == w + 1"  ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} else if (x > y) w; == null"       ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x < y) { z+2; z;} else if (x < y) {w+2; w;} == z"   ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} else if (x < y) {w+2; w;} == w"   ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
-         test_xyzw<T>("if (x > y) { z+2; z;} else if (x > y) {w+2; w;} == null",T(1.0),T(2.0),T(3.0),T(4.0),T(1.0))
+         test_xyzw<T>("if (x < y) { z+2; z;} == z"                               ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x > y) { z+2; z;} == null"                            ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x < y) { z+2; z;} else w; == z"                       ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x > y) { z+2; z;} else 1 + w; == (w + 1)"             ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x < y) { z+2; z;} else {1+2; w;} == z"                ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x > y) { z+2; z;} else {1+2; w;} == w"                ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("(if (x < y) { z+2; z;} else if (x < y) w;) == z"          ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("(if (x > y) { z+2; z;} else if (x < y) 1 + w;) == w + 1"  ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("(if (x > y) { z+2; z;} else if (x > y) w;) == null"       ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x < y) { z+2; z;} else if (x < y) {w + 2; w;} == z"   ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x > y) { z+2; z;} else if (x < y) {w + 2; w;} == w"   ,T(1.0),T(2.0),T(3.0),T(4.0),T(1.0)),
+         test_xyzw<T>("if (x > y) { z+2; z;} else if (x > y) {w + 2; w;} == null",T(1.0),T(2.0),T(3.0),T(4.0),T(1.0))
       };
 
       static const std::size_t test_list_size = sizeof(test_list) / sizeof(test_xyzw<T>);
@@ -2096,7 +2098,7 @@ struct test_ab
 };
 
 template <typename T>
-inline bool run_test02()
+bool run_test02()
 {
    static const test_ab<T> test_list[] =
    {
@@ -2937,7 +2939,7 @@ inline bool run_test02()
 }
 
 template <typename T>
-inline bool run_test03()
+bool run_test03()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>   expression_t;
@@ -3241,9 +3243,9 @@ inline T clamp(const T& l, const T& v, const T& u)
 }
 
 template <typename T>
-inline bool run_test04()
+bool run_test04()
 {
-   std::string expression_string = "clamp(-1.0,sin(2 * pi * x) + cos(y / 2 * pi),+1.0)";
+   const std::string expression_string = "clamp(-1.0,sin(2 * pi * x) + cos(y / 2 * pi),+1.0)";
 
    exprtk::symbol_table<T> symbol_table;
    exprtk::expression<T> expression;
@@ -3298,10 +3300,11 @@ inline bool run_test04()
 }
 
 template <typename T>
-inline bool run_test05()
+bool run_test05()
 {
    typedef exprtk::expression<T> expression_t;
-   std::string expression_string = "clamp(-1.0,sin(2 * pi * x_var123) + cos(y_var123 / 2 * pi),+1.0)";
+
+   const std::string expression_string = "clamp(-1.0,sin(2 * pi * x_var123) + cos(y_var123 / 2 * pi),+1.0)";
 
    exprtk::symbol_table<T>  symbol_table;
    std::deque<expression_t> expression_list;
@@ -3370,10 +3373,11 @@ inline bool run_test05()
 }
 
 template <typename T>
-inline bool run_test06()
+bool run_test06()
 {
    typedef exprtk::expression<T> expression_t;
-   std::string expression_string = "sqrt(1 - (x^2))";
+
+   const std::string expression_string = "sqrt(1 - (x^2))";
 
    T x = T(0);
 
@@ -3409,7 +3413,7 @@ inline bool run_test06()
    if (not_equal(total_area1,T(pi) / T(2),T(0.000001)))
    {
       printf("run_test06() - Integration Error:  Expected: %19.15f\tResult: %19.15f\n",
-             static_cast<double>((pi / T(2))),
+             static_cast<double>(pi / T(2)),
              static_cast<double>(total_area1));
 
       return false;
@@ -3419,10 +3423,11 @@ inline bool run_test06()
 }
 
 template <typename T>
-inline bool run_test07()
+bool run_test07()
 {
    typedef exprtk::expression<T> expression_t;
-   std::string expression_string = "sin(2x + 1 / 3)";
+
+   const std::string expression_string = "sin(2x + 1 / 3)";
 
    T x = T(0);
 
@@ -3518,7 +3523,7 @@ inline bool run_test07()
 }
 
 template <typename T>
-inline bool run_test08()
+bool run_test08()
 {
 
    static const std::string expr_str[] =
@@ -3731,10 +3736,11 @@ define_free_functions(foo,numeric_type)
 #undef define_free_functions
 
 template <typename T>
-inline bool run_test09()
+bool run_test09()
 {
    {
       static const std::size_t rounds = 1000;
+
       for (std::size_t i = 0; i < rounds; ++i)
       {
          typedef exprtk::expression<T> expression_t;
@@ -3877,7 +3883,7 @@ inline bool run_test09()
 }
 
 template <typename T>
-inline bool run_test10()
+bool run_test10()
 {
    typedef exprtk::expression<T> expression_t;
 
@@ -5211,9 +5217,10 @@ inline bool run_test10()
 }
 
 template <typename T>
-inline bool run_test11()
+bool run_test11()
 {
    typedef exprtk::expression<T> expression_t;
+
    std::string expression_string = "(x + y) / 3";
 
    T x = T(1.0);
@@ -5283,7 +5290,7 @@ inline bool run_test11()
 }
 
 template <typename T>
-inline bool run_test12()
+bool run_test12()
 {
    typedef exprtk::expression<T> expression_t;
 
@@ -5410,7 +5417,7 @@ struct cosine_deg exprtk_test_final : public exprtk::ifunction<T>
 };
 
 template <typename T>
-inline bool run_test13()
+bool run_test13()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>   expression_t;
@@ -5581,9 +5588,17 @@ inline std::size_t load_expressions(const std::string& file_name,
 }
 
 template <typename T>
-inline bool run_test14()
+inline T isnan(const T t)
 {
-   typedef exprtk::expression<T> expression_t;
+   return std::isnan(static_cast<double>(t)) ? T(1) : T(0);
+}
+
+template <typename T>
+bool run_test14()
+{
+   typedef exprtk::expression<T>             expression_t;
+   typedef exprtk::parser<T>                 parser_t;
+   typedef typename parser_t::settings_store settings_t;
 
    T x = T(0);
    T y = T(0);
@@ -5623,6 +5638,7 @@ inline bool run_test14()
    symbol_table.add_function("poly10", poly10);
    symbol_table.add_function("poly11", poly11);
    symbol_table.add_function("poly12", poly12);
+   symbol_table.add_function("isnan" , isnan );
 
    symbol_table.add_package(vector_package);
 
@@ -5631,18 +5647,33 @@ inline bool run_test14()
 
    exprtk::parser<T> parser;
 
-   std::deque<std::string> expr_str_list;
+   static const std::size_t secondary_compile_options =
+      settings_t::e_replacer          +
+      settings_t::e_joiner            +
+      settings_t::e_numeric_check     +
+      settings_t::e_bracket_check     +
+      settings_t::e_sequence_check    +
+      settings_t::e_strength_reduction;
 
-   load_expressions("exprtk_functional_test.txt"    ,expr_str_list);
-   load_expressions("exprtk_functional_ext_test.txt",expr_str_list);
+   const settings_t settings(secondary_compile_options);
+   parser_t secondary_parser(settings);
+
+   std::deque<std::string> expr_str_list;
+   std::deque<std::string> expr_noncomm_str_list;
+
+   load_expressions("exprtk_functional_test.txt"     , expr_str_list);
+   load_expressions("exprtk_functional_ext_test.txt" , expr_str_list);
 
    if (expr_str_list.empty())
    {
       return true;
    }
 
+   load_expressions("exprtk_noncommutative_test.txt" , expr_noncomm_str_list);
+
    std::deque<exprtk::expression<T> > expression_list;
    bool error_found = false;
+
    static const std::size_t rounds = 5;
 
    for (std::size_t r = 0; r < rounds; ++r)
@@ -5662,7 +5693,25 @@ inline bool run_test14()
             error_found = true;
          }
          else
+         {
             expression_list.push_back(current_expression);
+         }
+      }
+
+      for (std::size_t i = 0; i < expr_noncomm_str_list.size(); ++i)
+      {
+         exprtk::expression<T> current_expression;
+
+         current_expression.register_symbol_table(symbol_table);
+
+         if (!secondary_parser.compile(expr_noncomm_str_list[i],current_expression))
+         {
+            printf("run_test14() - Error: %s   Expression: %s [secondary parser]\n",
+                   secondary_parser.error().c_str(),
+                   expr_noncomm_str_list[i].c_str());
+
+            error_found = true;
+         }
       }
 
       if (error_found)
@@ -5672,7 +5721,7 @@ inline bool run_test14()
 
       for (std::size_t i = 0; i < expression_list.size(); ++i)
       {
-         T result = expression_list[i].value();
+         const T result = expression_list[i].value();
 
          if (result != T(1))
          {
@@ -5695,7 +5744,7 @@ inline bool run_test14()
 }
 
 template <typename T>
-inline bool run_test15()
+bool run_test15()
 {
    typedef exprtk::expression<T> expression_t;
 
@@ -5815,7 +5864,7 @@ template <typename T> struct test_func1 exprtk_test_final : public base_func<T> 
 template <typename T> struct test_func0 exprtk_test_final : public base_func<T> { test_func0() : base_func<T>(0){} };
 
 template <typename T>
-inline bool run_test16()
+bool run_test16()
 {
    typedef exprtk::expression<T> expression_t;
 
@@ -5953,7 +6002,7 @@ inline bool run_test16()
 }
 
 template <typename T>
-inline bool run_test17()
+bool run_test17()
 {
    typedef exprtk::expression<T> expression_t;
 
@@ -6420,7 +6469,7 @@ struct vector_access_rtc_counter : public exprtk::vector_access_runtime_check
 };
 
 template <typename T>
-inline bool run_test18()
+bool run_test18()
 {
    {
       exprtk::symbol_table<T> symbol_table;
@@ -7892,17 +7941,17 @@ inline bool run_test18()
          "var v[5]; iota(v, 0, v[] -1,  0, -2); var r[5] := {  0, -2, -4, -6, -8}; sum(v == r) == v[]",
          "var v[5]; iota(v, 0, v[] -1, -1, -2); var r[5] := { -1, -3, -5, -7, -9}; sum(v == r) == v[]",
 
-         "var v[5]; iota(v, 0,1);  threshold_below(v,2, 0) var r[5] := { 0, 0, 2, 3, 4}; sum(v == r) == v[]",
-         "var v[5]; iota(v, 0,1);  threshold_above(v,2, 0) var r[5] := { 0, 1, 2, 0, 0}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 0,1);  threshold_below(v,2, 0); var r[5] := { 0, 0, 2, 3, 4}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 0,1);  threshold_above(v,2, 0); var r[5] := { 0, 1, 2, 0, 0}; sum(v == r) == v[]",
 
-         "var v[5]; iota(v, 0,1);  threshold_below(v,0,v[] - 1,2, 0) var r[5] := { 0, 0, 2, 3, 4}; sum(v == r) == v[]",
-         "var v[5]; iota(v, 0,1);  threshold_above(v,0,v[] - 1,2, 0) var r[5] := { 0, 1, 2, 0, 0}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 0,1);  threshold_below(v,0,v[] - 1,2, 0); var r[5] := { 0, 0, 2, 3, 4}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 0,1);  threshold_above(v,0,v[] - 1,2, 0); var r[5] := { 0, 1, 2, 0, 0}; sum(v == r) == v[]",
 
-         "var v[5]; iota(v, 1,1);  threshold_below(v,1,v[] - 1,2, 0) var r[5] := { 1, 2, 3, 4, 5}; sum(v == r) == v[]",
-         "var v[5]; iota(v, 1,1);  threshold_above(v,1,v[] - 1,2, 0) var r[5] := { 1, 2, 0, 0, 0}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 1,1);  threshold_below(v,1,v[] - 1,2, 0); var r[5] := { 1, 2, 3, 4, 5}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 1,1);  threshold_above(v,1,v[] - 1,2, 0); var r[5] := { 1, 2, 0, 0, 0}; sum(v == r) == v[]",
 
-         "var v[5]; iota(v, 0,1);  threshold_below(v,0,v[] - 2,2, 0) var r[5] := { 0, 0, 2, 3, 4}; sum(v == r) == v[]",
-         "var v[5]; iota(v, 0,1);  threshold_above(v,0,v[] - 2,2, 0) var r[5] := { 0, 1, 2, 0, 4}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 0,1);  threshold_below(v,0,v[] - 2,2, 0); var r[5] := { 0, 0, 2, 3, 4}; sum(v == r) == v[]",
+         "var v[5]; iota(v, 0,1);  threshold_above(v,0,v[] - 2,2, 0); var r[5] := { 0, 1, 2, 0, 4}; sum(v == r) == v[]",
 
          " var a := 2; var x[3] := {1,2,3}; var y[3] := {1,2,3}; var r[3] := [0]; r := a * x + y; axpy(a,x,y); sum(y == r) == y[]",
          " var a := 2; var b := 3; var x[3] := {1,2,3}; var y[3] := {1,2,3}; var r[3] := [0]; r := a * x + b * y; axpby(a,x,b,y); sum(y == r) == y[]",
@@ -8414,7 +8463,7 @@ inline bool run_test18()
 }
 
 template <typename T>
-struct depth_to_str final : public exprtk::igeneric_function<T>
+struct depth_to_str exprtk_test_final : public exprtk::igeneric_function<T>
 {
    typedef exprtk::igeneric_function<T>           igenfunct_t;
    typedef typename igenfunct_t::generic_type     generic_t;
@@ -8428,7 +8477,7 @@ struct depth_to_str final : public exprtk::igeneric_function<T>
    using igenfunct_t::operator();
 
    inline T operator()(std::string& result,
-                       parameter_list_t parameters) override
+                       parameter_list_t parameters) exprtk_test_override
    {
 
       result = "depth" + exprtk::details::to_str(static_cast<int>(scalar_t(parameters[0])()));
@@ -8437,7 +8486,7 @@ struct depth_to_str final : public exprtk::igeneric_function<T>
 };
 
 template <typename T>
-inline bool run_test19()
+bool run_test19()
 {
    typedef exprtk::symbol_table<T>         symbol_table_t;
    typedef exprtk::expression<T>           expression_t;
@@ -8649,8 +8698,8 @@ inline bool run_test19()
             if (!parser.compile(expr_str_list[i], expression))
             {
                printf("run_test19() - Error: %s   Expression: %s\n",
-                  parser.error().c_str(),
-                  expr_str_list[i].c_str());
+                      parser.error().c_str(),
+                      expr_str_list[i].c_str());
 
                error_found = true;
                continue;
@@ -9921,7 +9970,7 @@ struct my_usr_ext exprtk_test_final : public exprtk::parser<T>::unknown_symbol_r
 };
 
 template <typename T>
-inline bool run_test20()
+bool run_test20()
 {
    typedef exprtk::expression<T> expression_t;
 
@@ -10319,7 +10368,7 @@ private:
 
 
 template <typename T>
-inline bool run_test21()
+bool run_test21()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>   expression_t;
@@ -10787,7 +10836,7 @@ inline bool run_test21()
    {
       typedef typename parser_t::settings_store settings_t;
 
-      const std::string expressions[] =
+      const std::string invalid_expressions[] =
       {
          "var result := 0; if (true) { result := 2 } if (true) { result := 3 }; result",
          "var result := 0; if (true) { result := 2 }; if (true) { result := 3 } result",
@@ -10798,10 +10847,132 @@ inline bool run_test21()
          "var result := 0; var x := 1; if (x > 0) { result := 2 } if (x > 0) { result := 3 } result",
          "var result := 0; var x := 1; if (x > 0) { result := 2 } else if (x > 0) { result := 3 } result",
          "var result := 0; var x := 1; if (x > 0) result := 2 else if (x > 0) { result := 3 } result",
-         "var result := 0; var x := 1; if (x > 0) {result := 2 } else if (x > 0) result := 3 result"
+         "var result := 0; var x := 1; if (x > 0) {result := 2 } else if (x > 0) result := 3 result",
+         "var x := 2; var y := 0; x y                                                        ",
+         "var x := 2; x var y := 0;                                                          ",
+         "var x := 2; var y := 0; while (y < 3) { x := x * x; y += 1; } x                    ",
+         "var x := 2; var y := 0; for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; } x  ",
+         "var x := 2; var y := 0; while (y < 3) { x := x * x; y += 1; } 1                    ",
+         "var x := 2; var y := 0; for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; } 1  ",
+         "var x := 2; var y := 0; x while (y < 3) { x := x * x; y += 1; }                    ",
+         "var x := 2; var y := 0; x for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; }  ",
+         "var x := 2; var y := 0; for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; } (1 + x)",
+         "var x := 2; var y := 0; for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; } (x + 1)",
+         "var x := 2; var y := 0; (1 + x) for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; }",
+         "var x := 2; var y := 0; (x + 1) for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; }",
+         "var x := 2; var y := 0; (x + y) for (var i := 0; i < 2; i += 1) { x := x * x; y += 1; }",
+         "'hello' 1",
+         "1 'hello'",
+         "'hel' + 'lo' 1",
+         "1 'hel' + 'lo'",
+         "1 2",
+         "a b",
+         "a b c",
+         "var x := 2; 1 2      ",
+         "var x := 2; 1 x      ",
+         "var x := 2; x 1      ",
+         "var x := 2; a 1      ",
+         "var x := 2; x a      ",
+         "var x := 2; x a b    ",
+         "var x := 2; x a b c  ",
+         "var x := 2; a x      ",
+         "var x := 2; a x b    ",
+         "var x := 2; a x b c  ",
+         "var x := 2; 'hello' 1",
+         "var x := 2; 1 'hello'",
+         "var x := 2; 'hello' x",
+         "var x := 2; x 'hello'",
+         "var x := 2; (x 1)                 ",
+         "var x := 2; (1 x)                 ",
+         "var x := 2; 2 + (x 1)             ",
+         "var x := 2; 2 + (1 x)             ",
+         "var x := 2; x + (x 1)             ",
+         "var x := 2; x + (1 x)             ",
+         "var x := 2; (x 1) + 2             ",
+         "var x := 2; (1 x) + 2             ",
+         "var x := 2; (x 1) + x             ",
+         "var x := 2; (1 x) + x             ",
+         "var x := 2; var y := 3; (x y)     ",
+         "var x := 2; var y := 3; (y x)     ",
+         "var x := 2; var y := 3; 2 + (x y) ",
+         "var x := 2; var y := 3; 2 + (y x) ",
+         "var x := 2; var y := 3; x + (x y) ",
+         "var x := 2; var y := 3; x + (y x) ",
+         "var x := 2; var y := 3; (x y) + 2 ",
+         "var x := 2; var y := 3; (y x) + 2 ",
+         "var x := 2; var y := 3; (x y) + x ",
+         "var x := 2; var y := 3; (y x) + x ",
+         "var x := 2; 2 + x 1               ",
+         "var x := 2; 2 + 1 x               ",
+         "var x := 2; x + x 1               ",
+         "var x := 2; x + 1 x               ",
+         "var x := 2; var y := 3; 2 + x y   ",
+         "var x := 2; var y := 3; 2 + y x   ",
+         "var x := 2; var y := 3; x + x y   ",
+         "var x := 2; var y := 3; x + y x   ",
+         "~{1; 2; 3} 1             ",
+         "1 ~{1; 2; 3}             ",
+         "var x := 2; x ~{x; 1; 2} ",
+         "var x := 2; 1 ~{x; 1; 2} ",
+         "var x := 2; ~{x; 1; 2} x ",
+         "var x := 2; ~{x; 1; 2} 1 ",
+         "~(1; 2; 3) 1             ",
+         "1 ~(1; 2; 3)             ",
+         "var x := 2; x ~(x; 1; 2) ",
+         "var x := 2; 1 ~(x; 1; 2) ",
+         "var x := 2; ~(x; 1; 2) x ",
+         "var x := 2; ~(x; 1; 2) 1 ",
+         "var x := 2; (x + 1) ~{x; 1; 2} ",
+         "var x := 2; (1 + x) ~{x; 1; 2} ",
+         "var x := 2; ~{x; 1; 2} (x + 1) ",
+         "var x := 2; ~{x; 1; 2} (1 + x) ",
+         "var x := 2; x + 1 ~{x; 1; 2} ",
+         "var x := 2; 1 + x ~{x; 1; 2} ",
+         "var x := 2; ~{x; 1; 2} x + 1 ",
+         "var x := 2; ~{x; 1; 2} 1 + x ",
+         "~(1, 2, 3) 1             ",
+         "1 ~(1, 2, 3)             ",
+         "var x := 2; x ~(x, 1, 2) ",
+         "var x := 2; 1 ~(x, 1, 2) ",
+         "var x := 2; ~(x, 1, 2) x ",
+         "var x := 2; ~(x, 1, 2) 1 ",
+         "var x := 2; 1 switch { case x > 1 : 1; case x < 3 : 2; default : 3; } ",
+         "var x := 2; x switch { case x > 1 : 1; case x < 3 : 2; default : 3; } ",
+         "var x := 2; switch { case x > 1 : 1; case x < 3 : 2; default : 3; } x ",
+         "var x := 2; 1 [*] { case x > 1 : 1; case x < 3 : 2; }                 ",
+         "var x := 2; x [*] { case x > 1 : 1; case x < 3 : 2; }                 ",
+         "var x := 2; [*] { case x > 1 : 1; case x < 3 : 2; } x                 ",
+         "var x := 2; (x + 1) switch { case x > 1 : 1; case x < 3 : 2; default : 3; } ",
+         "var x := 2; switch { case x > 1 : 1; case x < 3 : 2; default : 3; } (x + 1) ",
+         "var x := 2; (x + 1) [*] { case x > 1 : 1; case x < 3 : 2; }                 ",
+         "var x := 2; [*] { case x > 1 : 1; case x < 3 : 2; } (x + 1)                 ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { return [i] 1; }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { 1 return [i]; }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { return [i] i; }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { i return [i]; }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { return [i] 1 + i; } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { 1 + i return [i]; } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { return [i] i + 1; } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { i + 1 return [i]; } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { 1 if (i > 3) return [i]; }    ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { if (i > 3) return [i] 1; }    ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { x if (i > 3) return [i]; }    ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { if (i > 3) return [i] x; }    ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { x + 1 if (i > 3) return [i]; }",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { if (i > 3) return [i] x + 1; }",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { 1 + x if (i > 3) return [i]; }",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { if (i > 3) return [i] 1 + x; }",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { 1 for (var j := 0; j < 2; j += 1){} }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { for (var j := 0; j < 2; j += 1){} 1 }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { x for (var j := 0; j < 2; j += 1){} }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { for (var j := 0; j < 2; j += 1){} x }     ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { x + 1 for (var j := 0; j < 2; j += 1){} } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { for (var j := 0; j < 2; j += 1){} x + 1 } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { 1 + x for (var j := 0; j < 2; j += 1){} } ",
+         "var x := 2; for (var i := 0; i < 2; i += 1) { for (var j := 0; j < 2; j += 1){} 1 + x } "
       };
 
-      const std::size_t expressions_size = sizeof(expressions) / sizeof(std::string);
+      const std::size_t expressions_size = sizeof(invalid_expressions) / sizeof(std::string);
 
       static const std::size_t compile_options =
          settings_t::e_replacer          +
@@ -10814,12 +10985,23 @@ inline bool run_test21()
       const settings_t settings(compile_options);
       parser_t parser(settings);
 
+      T a = T(2222);
+      T b = T(3333);
+      T c = T(4444);
+
+      symbol_table_t symbol_table;
+      symbol_table.add_variable("a", a);
+      symbol_table.add_variable("b", b);
+      symbol_table.add_variable("c", c);
+
       bool error_found = false;
 
       for (std::size_t e = 0; e < expressions_size; ++e)
       {
-         const std::string& expression_string = expressions[e];
+         const std::string& expression_string = invalid_expressions[e];
+
          expression_t expression;
+         expression.register_symbol_table(symbol_table);
 
          if (parser.compile(expression_string,expression))
          {
@@ -11515,7 +11697,7 @@ struct assert_handler exprtk_test_final : public exprtk::assert_check
 };
 
 template <typename T>
-inline bool run_test22()
+bool run_test22()
 {
    typedef exprtk::symbol_table<T> symbol_table_t;
    typedef exprtk::expression<T>   expression_t;
